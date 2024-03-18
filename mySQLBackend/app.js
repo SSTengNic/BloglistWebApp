@@ -10,7 +10,12 @@ const middleware = require("./utils/middleware");
 const app = express();
 
 app.use(express.json());
-app.use(cors());
+app.use(
+    cors({
+        origin: "http://localhost:3000", // Replace with your frontend URL
+        credentials: true,
+    })
+);
 
 app.use(middleware.tokenExtractor);
 app.use(middleware.userExtractor);

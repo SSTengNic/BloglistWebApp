@@ -5,7 +5,7 @@ const LoginForm = ({ handleLogin }) => {
     const [password, setPassword] = useState("");
 
     console.log(
-        "FRONTEND/compoennts/LoginForm, logging in with username: ",
+        "FRONTEND/components/LoginForm, logging in with username: ",
         username,
         "password: ",
         password

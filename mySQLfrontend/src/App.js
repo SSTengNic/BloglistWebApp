@@ -1,11 +1,14 @@
-import { useState, useEffect, useRef, useCallback } from "react";
+import { useState, useEffect, useRef } from "react";
 import Blog from "./components/Blog";
 import blogService from "./services/blogs";
 import loginService from "./services/login";
+import signupService from "./services/signups";
+
 import Notification from "./components/Notification";
 import LoginForm from "./components/LoginForm";
 import BlogForm from "./components/BlogForm";
 import Togglable from "./components/Togglable";
+import SignupForm from "./components/SignupForm";
 
 const App = () => {
     const [blogs, setBlogs] = useState([]);
@@ -13,7 +16,7 @@ const App = () => {
     const [newMessage, setNewMessage] = useState("");
     const [user, setUser] = useState(null);
 
-    const [errorMessage, setErrorMessage] = useState("");
+    const [notificationMessage, setNotificationMessage] = useState("");
 
     const BlogFormRef = useRef();
 
@@ -54,9 +57,9 @@ const App = () => {
             setUser(user);
             setNewMessage(`${user.username} has logged in.`);
         } catch (exception) {
-            setErrorMessage("Wrong Credentials");
+            setNotificationMessage("Wrong Credentials");
             setTimeout(() => {
-                setErrorMessage(null);
+                setNotificationMessage(null);
             }, 5000);
         }
     };
@@ -83,9 +86,9 @@ const App = () => {
             );
             setReloader(!reloader);
         } catch (exception) {
-            setErrorMessage("Failed to post");
+            setNotificationMessage("Failed to post");
             setTimeout(() => {
-                setErrorMessage(null);
+                setNotificationMessage(null);
             }, 5000);
         }
     };
@@ -95,9 +98,9 @@ const App = () => {
             const response = await blogService.delBlog(blogId);
             setReloader(!reloader);
         } catch (exception) {
-            setErrorMessage("Failed to Delete");
+            setNotificationMessage("Failed to Delete");
             setTimeout(() => {
-                setErrorMessage(null);
+                setNotificationMessage(null);
             }, 5000);
         }
     };
@@ -112,9 +115,26 @@ const App = () => {
             setBlogs([...blogs, updatedBlog]);
             setReloader(!reloader);
         } catch (exception) {
-            setErrorMessage("Failed to update Likes.");
+            setNotificationMessage("Failed to update Likes.");
             setTimeout(() => {
-                setErrorMessage(null);
+                setNotificationMessage(null);
+            }, 5000);
+        }
+    };
+
+    const handleSignup = async (signupObject) => {
+        try {
+            console.log("signUpObject is: ", signupObject);
+            const postAccount = await signupService.signup(signupObject);
+            console.log(
+                "FRONTEND/App/handleSignup, Signup successful. Account details: ",
+                postAccount
+            );
+            setNotificationMessage("Account Creation Successful.");
+        } catch (exception) {
+            setNotificationMessage("Failed to sign up account.");
+            setTimeout(() => {
+                setNotificationMessage(null);
             }, 5000);
         }
     };
@@ -123,12 +143,18 @@ const App = () => {
 
     return (
         <div>
-            <p>{errorMessage}</p>
+            <p>{notificationMessage}</p>
             <h2>blogs</h2>
             {user === null ? (
-                <Togglable buttonLabel="Login">
-                    <LoginForm handleLogin={handleLogin} />
-                </Togglable>
+                <div>
+                    <Togglable buttonLabel="Login">
+                        <LoginForm handleLogin={handleLogin} />
+                    </Togglable>
+
+                    <Togglable buttonLabel="Signup">
+                        <SignupForm handleSignup={handleSignup} />
+                    </Togglable>
+                </div>
             ) : (
                 <div>
                     <h2>Blogs </h2>

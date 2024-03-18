@@ -32,6 +32,8 @@ usersRouter.get("/:id", async (request, response, next) => {
 usersRouter.post("/", async (request, response) => {
     const { username, name, password } = request.body;
 
+    console.log("request body: ", request.body);
+
     // Check if the password meets the length requirement
     if (password.length < 3) {
         return response.status(401).json({
