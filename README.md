@@ -18,3 +18,5 @@ There are quite a few features, but the most prominent ones are:
 -   Separate versions for MySQL and MongoDB databases.
 
 # Roadmap
+
+Currently, there are some new features that I want to implement. Namely, a signup button and a profile page for each account. The idea would be to build something similar to a social media app, where every account has a profile page that contains their own personal information as well as the blogs that they have made.
